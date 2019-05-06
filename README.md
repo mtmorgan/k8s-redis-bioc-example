@@ -1,4 +1,4 @@
- 5 May, 2019
+6 May, 2019
 
 # Work in progress: current state
 
@@ -76,7 +76,7 @@ Use `bplapply()` for parallel evaluation
 
 Quit and exit when done, and clean up
 
-    q()       # R
+    > q()     # R
     # exit    # manager
     $ kubectl delete -f R/five-workers.yaml
     $ kubectl delete -f redis/redis-pod.yaml
