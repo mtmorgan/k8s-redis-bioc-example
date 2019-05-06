@@ -2,7 +2,7 @@
 
 # Work in progress: current state
 
-Start, e.g., minikube
+From the root directory of this repository, start, e.g., minikube
 
     minikube start
 
@@ -46,7 +46,7 @@ Define a simple function
 
     fun = function(i) {
         Sys.sleep(1)
-        Sys.info()["nodename"]
+        Sys.info()[["nodename"]]
     }
 
 Create a `RedisParam` to connect to the job queue and communicate with
