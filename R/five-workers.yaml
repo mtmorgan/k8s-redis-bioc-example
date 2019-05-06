@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: five-worker
+spec:
+  parallelism: 5
+  template:
+    metadata:
+      name: five-worker
+    spec:
+      containers:
+      - name: five-worker
+        image: r-redis
+        command: ["R"]
+        args: ["-f", "worker.R"]
+        imagePullPolicy: Never
+      restartPolicy: OnFailure
