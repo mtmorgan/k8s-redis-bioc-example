@@ -1,13 +1,15 @@
-FROM rocker/r-ver:3.6.0
+FROM rocker/rstudio:3.6.0
 
-RUN apt-get update && apt-get install -y --no-install-recommends libhiredis-dev
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+RUN apt-get install -y --no-install-recommends libhiredis-dev
 
 WORKDIR /tmp
 COPY install.R .
 RUN R -f install.R
 WORKDIR /
 
-COPY manager.R .
-COPY worker.R .
+COPY manager.R /home/rstudio/
+COPY worker.R /home/rstudio/
 
-CMD ["/bin/bash"]
+COPY 01-Renviron /etc/cont-init.d/01-Renviron
+

@@ -2,45 +2,63 @@
 
 # Work in progress: current state
 
+## Create Docker image
+
 From the root directory of this repository, start, e.g., minikube
 
     minikube start
 
 or other k8s host.
 
-Build an _R_ worker docker file -- this is from `rocker/r-ver:3.6.0`,
-with [RedisParam][]. If one were implementing a particularly
-workflow, likely it would be built from a more complete image like
-[Bioconductor/AnVIL_Docker][] customized with required packages.
+Build an _R_ worker docker file -- this is from
+`rocker/rstudio:3.6.0`, R, RStudio server, and [RedisParam][]. If one
+were implementing a particularly workflow, likely it would be built
+from a more complete image like [Bioconductor/AnVIL_Docker][]
+customized with required packages.
 
     eval \$(minikube docker-env)
-    docker build -t r-redis R/
+    docker build -t bioc-redis R/
 
-If this were the google cloud, then the `r-redis` image would need to
+If this were the google cloud, then the `bioc-redis` image would need to
 be on Dockerhub or similar.
 
 [RedisParam]: https://github.com/mtmorgan/RedisParam
 [Bioconductor/AnVIL_Docker]: https://github.com/Bioconductor/AnVIL_Docker
+
+## Create kubernetes components
 
 In kubernetes, create a redis service and running redis application
 
     kubectl create -f redis/redis-service.yaml
     kubectl create -f redis/redis-pod.yaml
 
+Create an RStudio service to expose RStudio, and an R / RStudio instance
+
+    kubectl create -f redis/rstudio-service.yaml
+    kubectl create -f redis/manager-pod.yaml
+
 Add five 'workers' based on this image
 
-    kubectl create -f R/five-workers.yaml
+    kubectl create -f R/worker-jobs.yaml
 
-Run another image as an interactive 'manager' node
+## Log in to R
 
-    kubectl run manager --rm -it --image r-redis --image-pull-policy=Never -- \
-        /bin/bash
+Connect to R at the command line with
 
-At the bash prompt, launch R
+    kubectl exec -it manager -- /bin/bash
 
-    # R
-    ...
-    >
+or via your browser at the ip address returned by
+
+    minicube ip
+
+and the second port (30001 in this example) associated with the
+rstudio-service
+
+    kubectl get services rstudio-service
+    ## NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+    ## rstudio-service   NodePort   10.106.213.234   <none>        8787:30001/TCP   5h44m
+
+# Use
 
 Define a simple function
 
@@ -57,7 +75,6 @@ default back-end
 
     hostname = Sys.getenv("REDIS_SERVICE_HOST")
     port = as.integer(Sys.getenv("REDIS_SERVICE_PORT"))
-    Sys.unsetenv("REDIS_PORT")
 
     p <- RedisParam(
         workers = 5, jobname = "demo", is.worker = FALSE,
@@ -65,27 +82,31 @@ default back-end
     )
     register(bpstart(p))
 
-The need to specify `hostname`, `port`, and `jobname` will be smoothed
-out; the need to create, start, and register `p` could be moved to,
-e.g., a `.Rprofile` on the Docker image).
-
 Use `bplapply()` for parallel evaluation
 
     system.time(res <- bplapply(1:13, fun))
     table(unlist(res))
 
-Quit and exit when done, and clean up
+## Clean up
+
+Quit and exit the R manager (or simply leave your RStudio session in
+the browser)
 
     > q()     # R
     # exit    # manager
-    $ kubectl delete -f R/five-workers.yaml
+
+Clean up kubernetes
+
+    $ kubectl delete -f R/worker-jobs.yaml
+    $ kubectl delete -f R/manager-pod.yaml
+    $ kubectl delete -f R/rstudio-server.yaml
     $ kubectl delete -f redis/redis-pod.yaml
     $ kubectl delete -f redis/redis-service.yaml
-    
+
 # TODO
 
-It should be quite easy to instead connect to an RStudio on the
-k8s-deployed Docker image through a web browser.
+A little further work will remove the need to create the
+`RedisParam()` in the R session.
 
 The create / delete steps can be coordinated by a [helm] chart, so
 that a one-liner will give a URL to a running RStudio backed by

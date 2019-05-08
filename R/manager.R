@@ -1,21 +1,20 @@
 library(RedisParam)
-hostname = Sys.getenv("REDIS_SERVICE_HOST")
+
+host = Sys.getenv("REDIS_SERVICE_HOST")
 port = as.integer(Sys.getenv("REDIS_SERVICE_PORT"))
-Sys.unsetenv("REDIS_PORT")
 
 p <- RedisParam(
     workers = 5, jobname = "demo", is.worker = FALSE,
-    manager.hostname = hostname, manager.port = port
+    manager.hostname = host, manager.port = port
 )
 
-bpstart(p)
-while (TRUE) {
-    print(system.time({
-        res <- bplapply(1:5, function(...) {
-            Sys.sleep(1)
-            system("hostname", intern=TRUE)
-        }, BPPARAM = p)
-        print(table(unlist(res)))
-    }))
+fun <- function(i) {
+    Sys.sleep(1)
+    Sys.info()[["nodename"]]
 }
+
+bpstart(p)
+system.time({
+    res <- bplapply(1:5, fun, BPPARAM = p)
+})
 bpstop(p)
