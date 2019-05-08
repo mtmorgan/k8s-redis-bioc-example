@@ -13,8 +13,8 @@ fun <- function(i) {
     Sys.info()[["nodename"]]
 }
 
-bpstart(p)
-system.time({
-    res <- bplapply(1:5, fun, BPPARAM = p)
+system.time({                     # 13 seconds / 5 workers = 3 seconds
+    res <- bplapply(1:13, fun, BPPARAM = p)
 })
-bpstop(p)
+
+table(unlist(res))                # each worker slept 2 or 3 times

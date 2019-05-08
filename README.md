@@ -2,6 +2,10 @@
 
 # Work in progress: current state
 
+Recent updates
+
+- Re-organized files for easier build & deploy
+
 ## Create Docker image
 
 From the root directory of this repository, start, e.g., minikube
@@ -11,13 +15,13 @@ From the root directory of this repository, start, e.g., minikube
 or other k8s host.
 
 Build an _R_ worker docker file -- this is from
-`rocker/rstudio:3.6.0`, R, RStudio server, and [RedisParam][]. If one
-were implementing a particularly workflow, likely it would be built
-from a more complete image like [Bioconductor/AnVIL_Docker][]
+`rocker/rstudio:3.6.0`, _R_, _RStudio_ server, and [RedisParam][]. If
+one were implementing a particularly workflow, likely it would be
+built from a more complete image like [Bioconductor/AnVIL_Docker][]
 customized with required packages.
 
     eval \$(minikube docker-env)
-    docker build -t bioc-redis R/
+    docker build -t bioc-redis docker/
 
 If this were the google cloud, then the `bioc-redis` image would need to
 be on Dockerhub or similar.
@@ -27,19 +31,16 @@ be on Dockerhub or similar.
 
 ## Create kubernetes components
 
-In kubernetes, create a redis service and running redis application
+In kubernetes, create a redis service and running redis application,
+an _RStudio_ service, an _RStudio_ 'manager', and five _R_ worker
+'jobs'.
 
-    kubectl create -f redis/redis-service.yaml
-    kubectl create -f redis/redis-pod.yaml
+    kubectl apply -f k8s/
 
-Create an RStudio service to expose RStudio, and an R / RStudio instance
+The two services, redis and manager pods, and worker pods should all
+be visible and healthy with
 
-    kubectl create -f redis/rstudio-service.yaml
-    kubectl create -f redis/manager-pod.yaml
-
-Add five 'workers' based on this image
-
-    kubectl create -f R/worker-jobs.yaml
+    kubectl get all
 
 ## Log in to R
 
@@ -51,12 +52,12 @@ or via your browser at the ip address returned by
 
     minicube ip
 
-and the second port (30001 in this example) associated with the
-rstudio-service
+and port 30001, e.g.,
 
-    kubectl get services rstudio-service
-    ## NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-    ## rstudio-service   NodePort   10.106.213.234   <none>        8787:30001/TCP   5h44m
+    http://192.168.99.101:30001
+
+this will provide access to RStudio, with user `rstudio` and password
+`bioc`.
 
 # Use
 

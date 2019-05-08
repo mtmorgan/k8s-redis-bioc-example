@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: rstudio-service
+  name: rstudio
   labels:
     app: rstudio
 spec:
