@@ -5,6 +5,6 @@
 # environment seen in Rstudio server
 
 cat <<EOF >> /usr/local/lib/R/etc/Renviron
-REDIS_SERVICE_HOST="$REDIS_SERVICE_HOST"
-REDIS_SERVICE_PORT="$REDIS_SERVICE_PORT"
+REDIS_HOST="$REDIS_SERVICE_HOST"
+REDIS_PORT="$REDIS_SERVICE_PORT"
 EOF

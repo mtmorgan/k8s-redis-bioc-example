@@ -1,12 +1,6 @@
 library(RedisParam)
 
-host = Sys.getenv("REDIS_SERVICE_HOST")
-port = as.integer(Sys.getenv("REDIS_SERVICE_PORT"))
-
-p <- RedisParam(
-    workers = 5, jobname = "demo", is.worker = FALSE,
-    manager.hostname = host, manager.port = port
-)
+p <- RedisParam(workers = 5, jobname = "demo", is.worker = FALSE)
 
 fun <- function(i) {
     Sys.sleep(1)
