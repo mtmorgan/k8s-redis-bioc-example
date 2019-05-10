@@ -44,11 +44,7 @@ be visible and healthy with
 
 ## Log in to R
 
-Connect to R at the command line with
-
-    kubectl exec -it manager -- /bin/bash
-
-or via your browser at the ip address returned by
+Via your browser at the ip address returned by
 
     minicube ip
 
@@ -57,7 +53,9 @@ and port 30001, e.g.,
     http://192.168.99.101:30001
 
 this will provide access to RStudio, with user `rstudio` and password
-`bioc`.
+`bioc`. Alternatively, connect to R at the command line with
+
+    kubectl exec -it manager -- /bin/bash
 
 # Use
 
