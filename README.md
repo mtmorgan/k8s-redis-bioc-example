@@ -20,7 +20,7 @@ one were implementing a particularly workflow, likely it would be
 built from a more complete image like [Bioconductor/AnVIL_Docker][]
 customized with required packages.
 
-    eval \$(minikube docker-env)
+    eval $(minikube docker-env)
     docker build -t bioc-redis docker/
 
 If this were the google cloud, then the `bioc-redis` image would need to
