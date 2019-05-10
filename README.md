@@ -74,13 +74,7 @@ default back-end
 
     library(RedisParam)
 
-    hostname = Sys.getenv("REDIS_SERVICE_HOST")
-    port = as.integer(Sys.getenv("REDIS_SERVICE_PORT"))
-
-    p <- RedisParam(
-        workers = 5, jobname = "demo", is.worker = FALSE,
-        manager.hostname = hostname, manager.port = port
-    )
+    p <- RedisParam(workers = 5, jobname = "demo", is.worker = FALSE)
     register(bpstart(p))
 
 Use `bplapply()` for parallel evaluation
