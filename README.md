@@ -98,11 +98,7 @@ the browser)
 
 Clean up kubernetes
 
-    $ kubectl delete -f R/worker-jobs.yaml
-    $ kubectl delete -f R/manager-pod.yaml
-    $ kubectl delete -f R/rstudio-server.yaml
-    $ kubectl delete -f redis/redis-pod.yaml
-    $ kubectl delete -f redis/redis-service.yaml
+    $ kubectl delete -f k8s/
 
 # TODO
 
