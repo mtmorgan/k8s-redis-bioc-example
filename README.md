@@ -34,11 +34,12 @@ be visible and healthy with
 ## Log in to R
 
 Via your browser on the port 300001 at the ip address returned by
+minikube or gcloud
 
-    minicube ip
+    ## For minikube, use...
+    minikube ip
 
-or on gcloud the "EXTERNAL-IP" address of any host
-
+    ## For gcloud, use any 'EXTERNAL-IP' from
     kubectl get nodes --output wide
 
 e.g.,
@@ -85,12 +86,12 @@ Clean up kubernetes
 
     $ kubectl delete -f k8s/
 
-Stop minikube
+Stop minikube or gcloud
 
+    ## minikube...
     minikube stop
 
-or `gcloud`
-
+    ## ..or gcloud
     gcloud container clusters delete [CLUSTER_NAME]
 
 # Google cloud [WORK IN PROGRESS]
