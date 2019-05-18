@@ -1,4 +1,4 @@
-6 May, 2019
+18 May, 2019
 
 # Work in progress: current state
 
@@ -8,7 +8,17 @@ Recent updates
 - Document use on gcloud
 - Re-organized files for easier build & deploy
 
-## Create kubernetes components
+## Start minikube or gcloud
+
+For minikube
+
+    minikube start
+
+for gcloud, see [below][].
+
+[below]: #google-cloud-work-in-progress
+
+## Create application in kubernetes
 
 In kubernetes, create a redis service and running redis application,
 an _RStudio_ service, an _RStudio_ 'manager', and five _R_ worker
@@ -23,11 +33,15 @@ be visible and healthy with
 
 ## Log in to R
 
-Via your browser at the ip address returned by
+Via your browser on the port 300001 at the ip address returned by
 
     minicube ip
 
-and port 30001, e.g.,
+or on gcloud the "EXTERNAL-IP" address of any host
+
+    kubectl get nodes --output wide
+
+e.g.,
 
     http://192.168.99.101:30001
 
@@ -36,7 +50,7 @@ this will provide access to RStudio, with user `rstudio` and password
 
     kubectl exec -it manager -- /bin/bash
 
-# Use
+## Use
 
 Define a simple function
 
@@ -71,13 +85,18 @@ Clean up kubernetes
 
     $ kubectl delete -f k8s/
 
+Stop minikube
+
+    minikube stop
+
+or `gcloud`
+
+    gcloud container clusters delete [CLUSTER_NAME]
+
 # Google cloud [WORK IN PROGRESS]
 
-There are two changes for use in the cloud. The docker image needs to
-be publicly available. One uses Google kubernetes service rather than
-minikube.
-
-Make sure that minikube is not running
+One uses Google kubernetes service rather than minikube. Make sure
+that minikube is not running
 
     minikube stop
 
@@ -99,11 +118,11 @@ the correct project associated with the account
 
     gcloud auth list
     gclod config list
-    
+
 Use `gcloud config help` / `gcloud config set help` and eventually
 `gcloud config set core/project VALUE` to udpate the project and
 perhaps other information, e.g., `compute/zone` and `compute/region`.
-    
+
 ## Start and authenticate the gcloud kubernetes engine
 
 A guide to [exposing applications][1] guide is available; we'll most
@@ -113,54 +132,20 @@ Create a cluster (replace `[CLUSTER_NAME]` with an appropriate
 identifier)
 
     gcloud container clusters create [CLUSTER_NAME]
-    
+
 Authenticate with the cluster
 
     gcloud container clusters get-credentials [CLUSTER_NAME]
-    
+
 Create a whole in the firewall that surrounds our cloud (30001 is from
 k8s/rstudio-service.yaml)
 
     gcloud compute firewall-rules create test-node-port --allow tcp:30001
 
+At this stage, we can use `kubectl apply ...` etc., as above.
+
 [1]: https://cloud.google.com/kubernetes-engine/docs/how-to/exposing-apps
 [2]: https://cloud.google.com/kubernetes-engine/docs/how-to/exposing-apps#creating_a_service_of_type_nodeport
-
-## Start our application
-
-Deploy our application to our cloud
-
-    kubectl apply -f k8s/
-    
-Confirm that the deployment was successful (may take a minute or
-so...)
-
-    kubectl get all
-    
-Find the external port of our service by looking for (any) IP address
-in the `EXTERNAL-IP` column of the output from
-
-    kubectl get nodes --output wide
-
-and connect to RStudio via the browser, e.g.,
-
-    http://35.245.195.245:30001/
-    
-Alternatively, connect to the command line
-
-    kubectl exec -it manager -- /bin/bash
-
-
-### Clean up
-
-Delete the deployment
-
-    kubectl delete -f k8s/
-    
-shut down the gcloud
-
-    gcloud container clusters delete [CLUSTER_NAME]
-
 
 # Docker images
 
