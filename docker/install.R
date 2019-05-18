@@ -1,6 +1,6 @@
-## version 0.0.1
+## version 0.0.2
 
 install.packages("BiocManager")
-BiocManager::install(version = "3.10", ask = FALSE)
-BiocManager::install("remotes")
+BiocManager::install(version = "devel", ask = FALSE)
+BiocManager::install("remotes", ask=FALSE)
 BiocManager::install("mtmorgan/RedisParam")

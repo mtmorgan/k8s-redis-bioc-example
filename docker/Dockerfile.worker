@@ -1,10 +1,12 @@
-FROM rocker/r-base:latest
+FROM rocker/r-ver:3.6.0
 
-RUN apt-get update && apt-get install -y --no-install-recommends libhiredis-dev
+RUN apt-get update && \
+        apt-get install -y --no-install-recommends libhiredis-dev && \
+        rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
 COPY install.R .
-RUN R -f install.R
+RUN R -f install.R && rm install.R
 WORKDIR /
 
-COPY worker.R /home/rstudio/
+COPY worker.R /home/docker/
