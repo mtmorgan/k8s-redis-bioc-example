@@ -7,12 +7,11 @@ metadata:
 spec:
   containers:
     - name: manager
-      image: bioc-redis
+      image: mtmorgan/bioc-redis-manager
       env:
         - name: PASSWORD
           value: "bioc"
       ports:
         - containerPort: 8787
       command: ["/init"]
-      imagePullPolicy: Never
   restartPolicy: "OnFailure"
