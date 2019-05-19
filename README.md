@@ -10,11 +10,13 @@ Recent updates
 
 ## Start minikube or gcloud
 
-For minikube
+Use minikube for (local) development, or gcloud for scalable deployment.
+
+Start the minikube VM with
 
     minikube start
 
-for gcloud, see [below][].
+For gcloud, see [below][].
 
 [below]: #google-cloud-work-in-progress
 
