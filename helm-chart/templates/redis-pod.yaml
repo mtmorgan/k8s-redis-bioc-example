@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name}}-redis-master
+  labels:
+    app: redis
+spec:
+  containers:
+    - name: redis-master
+      image: redis
+      env:
+        - name: {{ .Values.workerConfig.env.name | lower }}
+          value: {{ .Values.workerConfig.env.value | quote}}
+      ports:
+        - containerPort: {{ .Values.workerConfig.containerPort}}

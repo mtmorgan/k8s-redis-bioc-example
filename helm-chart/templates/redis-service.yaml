@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name}}-redis
+spec:
+  ports:
+    - port: {{ .Values.workerConfig.containerPort}}
+      targetPort: {{ .Values.workerConfig.containerPort}}
+  selector:
+    app: redis
