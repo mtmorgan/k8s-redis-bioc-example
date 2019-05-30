@@ -8,8 +8,10 @@ spec:
   containers:
     - name: master
       image: {{ .Values.cluster.redisImage}}
+      tag: {{ .Values.cluster.redisImageTag}}
       env:
         - name: {{ .Values.workerConfig.env.name | upper}}
           value: {{ .Values.workerConfig.env.value | quote }}
       ports:
         - containerPort: {{ .Values.workerConfig.containerPort}}
+      imagePullPolicy: {{ .Values.workerConfig.pullPolicy }}

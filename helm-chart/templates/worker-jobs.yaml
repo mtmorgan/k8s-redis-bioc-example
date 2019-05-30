@@ -11,6 +11,8 @@ spec:
       containers:
       - name: worker
         image: {{ .Values.cluster.workerImage }}
+        tag: {{ .Values.cluster.workerImageTag }}
         command: ["R"]
         args: ["-f", "/home/docker/worker.R"]
+        imagePullPolicy: {{ .Values.workerConfig.pullPolicy }}
       restartPolicy: {{ .Values.clusterConfig.restartPolicy }}

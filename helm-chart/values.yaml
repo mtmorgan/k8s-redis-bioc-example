@@ -11,7 +11,8 @@ cluster:
   rstudioImage: rocker/rstudio
   rstudioTag: 3.6.0
   redisImage: redis
-  
+  redisImageTag: latest
+
 # Default cluster config:
 # settings here will apply to all three images,
 # manager, worker, rstudio
@@ -22,12 +23,14 @@ clusterConfig:
 managerConfig:
   env:
     name: PASSWORD
+    ## User setting: change the password of your Rstudio image
     value: bioc
   containerPort: 8787
   pullPolicy: IfNotPresent
 
 # worker config
 workerConfig:
+  ## User setting: change the numebr of workers in your cluster
   workerPoolSize: 5
   env:
     name: master
