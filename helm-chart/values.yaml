@@ -4,12 +4,16 @@
 
 # Manager and worker images
 cluster:
+  # custom manager image
   managerImage: mtmorgan/bioc-redis-manager
   managerImageTag: latest
+  # custom worker image
   workerImage: mtmorgan/bioc-redis-worker
   workerImageTag: latest
+  # Rstudio image
   rstudioImage: rocker/rstudio
   rstudioTag: 3.6.0
+  # Redis image
   redisImage: redis
   redisImageTag: latest
 
@@ -21,17 +25,11 @@ clusterConfig:
 
 # manager config
 managerConfig:
-  env:
-    name: PASSWORD
-    ## User setting: change the password of your Rstudio image
-    value: bioc
   containerPort: 8787
   pullPolicy: IfNotPresent
 
 # worker config
 workerConfig:
-  ## User setting: change the numebr of workers in your cluster
-  workerPoolSize: 5
   env:
     name: master
     value: true
@@ -40,11 +38,15 @@ workerConfig:
 
 # Rstudio specific config
 rstudioConfig:
-  env:
-    name: PASSWORD
-    value: bioc
   type: NodePort
   port: 8787
   nodePort: 30001
   protocol: http
   pullPolicy: IfNotPresent
+
+# user settings
+userSettings:
+  # User setting: change the rstudio password on the manager
+  rstudioPassword: bioc
+  # User setting: change the number of workers in your cluster
+  workerPoolSize: 5

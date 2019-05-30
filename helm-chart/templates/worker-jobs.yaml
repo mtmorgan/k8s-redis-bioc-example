@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: worker
 spec:
-  parallelism: {{ .Values.workerConfig.workerPoolSize}}
+  parallelism: {{ .Values.userSettings.workerPoolSize}}
   template:
     metadata:
       name: worker

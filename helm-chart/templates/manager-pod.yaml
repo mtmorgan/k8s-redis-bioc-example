@@ -10,8 +10,8 @@ spec:
       image: {{ .Values.cluster.managerImage}}
       tag: {{ .Values.cluster.managerImageTag }}
       env:
-        - name: {{ .Values.managerConfig.env.name}}
-          value: {{ .Values.managerConfig.env.value}}
+        - name: PASSWORD
+          value: {{ .Values.userSettings.rstudioPassword}}
       ports:
         - containerPort: {{ .Values.managerConfig.containerPort}}
       command: ["/init"]
