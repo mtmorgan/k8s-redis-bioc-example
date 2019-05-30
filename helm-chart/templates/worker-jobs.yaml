@@ -3,14 +3,14 @@ kind: Job
 metadata:
   name: worker
 spec:
-  parallelism: 5
+  parallelism: {{ .Values.workerConfig.workerPoolSize}}
   template:
     metadata:
       name: worker
     spec:
       containers:
       - name: worker
-        image: mtmorgan/bioc-redis-worker
+        image: {{ .Values.cluster.workerImage }}
         command: ["R"]
         args: ["-f", "/home/docker/worker.R"]
-      restartPolicy: OnFailure
+      restartPolicy: {{ .Values.clusterConfig.restartPolicy }}

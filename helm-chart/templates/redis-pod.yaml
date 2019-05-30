@@ -9,7 +9,7 @@ spec:
     - name: master
       image: {{ .Values.cluster.redisImage}}
       env:
-        - name: MASTER
-          value: "true"
+        - name: {{ .Values.workerConfig.env.name | upper}}
+          value: {{ .Values.workerConfig.env.value | quote }}
       ports:
         - containerPort: {{ .Values.workerConfig.containerPort}}

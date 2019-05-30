@@ -14,4 +14,4 @@ spec:
       ports:
         - containerPort: {{ .Values.managerConfig.containerPort}}
       command: ["/init"]
-  restartPolicy: "OnFailure"
+  restartPolicy: {{ .Values.clusterConfig.restartPolicy | quote }}

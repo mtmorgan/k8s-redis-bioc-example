@@ -9,6 +9,6 @@ spec:
   ports:
     - port: {{ .Values.rstudioConfig.port}}
       nodePort: {{ .Values.rstudioConfig.nodePort}}
-      name: http
+      name: {{ .Values.rstudioConfig.protocol }}
   selector:
     app: rstudio
