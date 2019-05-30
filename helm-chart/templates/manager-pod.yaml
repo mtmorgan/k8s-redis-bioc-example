@@ -1,19 +1,17 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name:  {{ .Release.Name }}-manager
+  name: {{ .Release.Name}}-manager
   labels:
     app: rstudio
 spec:
   containers:
     - name: manager
       image: {{ .Values.cluster.managerImage}}
-      tag: {{ .Values.cluster.managerImageTag}}
       env:
         - name: {{ .Values.managerConfig.env.name}}
-          value: {{ quote .Values.managerConfig.env.value}}
+          value: {{ .Values.managerConfig.env.value}}
       ports:
         - containerPort: {{ .Values.managerConfig.containerPort}}
       command: ["/init"]
-      imagePullPolicy: {{ .Values.managerConfig.pullPolicy}}
-  restartPolicy: {{ .Values.clusterConfig.restartPolicy}}
+  restartPolicy: "OnFailure"

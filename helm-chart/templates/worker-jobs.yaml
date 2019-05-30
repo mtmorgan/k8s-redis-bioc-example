@@ -1,18 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name}}-worker
+  name: worker
 spec:
-  parallelism: {{ .Values.workerConfig.workerPoolSize }}
+  parallelism: 5
   template:
     metadata:
       name: worker
     spec:
       containers:
       - name: worker
-        image: {{ .Values.cluster.workerImage}}
-        tag: {{ .Values.cluster.workerImageTag}}
+        image: mtmorgan/bioc-redis-worker
         command: ["R"]
-        args: ["-f", "/home/rstudio/worker.R"]
-        imagePullPolicy: IfNotPresent
-      restartPolicy: {{ .Values.clusterConfig.restartPolicy}}
+        args: ["-f", "/home/docker/worker.R"]
+      restartPolicy: OnFailure

@@ -6,10 +6,10 @@ metadata:
     app: redis
 spec:
   containers:
-    - name: redis-master
-      image: redis
+    - name: master
+      image: {{ .Values.cluster.redisImage}}
       env:
-        - name: {{ .Values.workerConfig.env.name | lower }}
-          value: {{ .Values.workerConfig.env.value | quote}}
+        - name: MASTER
+          value: "true"
       ports:
         - containerPort: {{ .Values.workerConfig.containerPort}}

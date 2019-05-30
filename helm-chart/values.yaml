@@ -4,16 +4,12 @@
 
 # Manager and worker images
 cluster:
-  # manager image
   managerImage: mtmorgan/bioc-redis-manager
   managerImageTag: latest
-  # worker image
   workerImage: mtmorgan/bioc-redis-worker
   workerImageTag: latest
-  # Rstudio image
   rstudioImage: rocker/rstudio
   rstudioTag: 3.6.0
-  # redis image
   redisImage: redis
   
 # Default cluster config:
