@@ -3,16 +3,16 @@ kind: Job
 metadata:
   name: worker
 spec:
-  parallelism: {{ .Values.userSettings.workerPoolSize}}
+  parallelism: {{ .Values.workerPoolSize }}
   template:
     metadata:
       name: worker
     spec:
       containers:
-      - name: worker
-        image: {{ .Values.cluster.workerImage }}
-        tag: {{ .Values.cluster.workerImageTag }}
-        command: ["R"]
-        args: ["-f", "/home/docker/worker.R"]
-        imagePullPolicy: {{ .Values.workerConfig.pullPolicy }}
-      restartPolicy: {{ .Values.clusterConfig.restartPolicy }}
+        - name: worker
+          image: {{ .Values.workerImage }}
+          tag: {{ .Values.workerImageTag }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          command: ["R"]
+          args: ["-f", "/home/docker/worker.R"]
+      restartPolicy: {{ .Values.restartPolicy }}

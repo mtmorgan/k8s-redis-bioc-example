@@ -4,7 +4,7 @@ metadata:
   name: redis
 spec:
   ports:
-    - port: {{ .Values.workerConfig.containerPort}}
-      targetPort: {{ .Values.workerConfig.containerPort}}
+    - port: {{ .Values.redis.containerPort }}
+      targetPort: {{ .Values.redis.containerPort }}
   selector:
     app: redis

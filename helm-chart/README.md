@@ -8,34 +8,38 @@ Clone and install the helm chart to get going with the Bioc RedisParam on K8s.
 
 Clone the repo
 
-	git clone https://github.com/mtmorgan/k8s-redis-bioc-example.git
+    git clone https://github.com/mtmorgan/k8s-redis-bioc-example.git
 
 Install the helm chart
 
-	helm install k8s-redis-bioc-example/helm-chart/
-	
+    helm install k8s-redis-bioc-example/helm-chart/
+
 Get list of running helm charts
 
-	helm list <release name>
+    helm list <release name>
 
 Get status of the installed chart
 
-	helm status <release name>
+    helm status <release name>
+
+Stop the chart
+
+    helm delete <release name>
 
 ### Requirements
 
 1. Kubernetes cluster is running, i.e (either minikube on your local
    machine or a cluster in the cloud)
-   
+
    This should work
-   
-		kubectl cluster-info 
-	
-		minikube start ## if you want to start a cluster
 
-1. Have helm installed!! 
+        ## minikube start
+        kubectl cluster-info
 
-		brew install helm 
+
+1. Have helm installed!!
+
+        brew install helm
 
 ### Debug or dry run
 
@@ -43,11 +47,11 @@ Very useful options to check how the templates are forming,
 
 `--dry-run` doesn't actually install the chart and run it.
 
-	helm install --dry-run k8s-redis-bioc-example/helm-chart/
+    helm install --dry-run k8s-redis-bioc-example/helm-chart/
 
 `--debug` prints out the templates with the values.yaml embedded in them
 
-	helm install --dry-run --debug k8s-redis-bioc-example/helm-chart/
+    helm install --dry-run --debug k8s-redis-bioc-example/helm-chart/
 
 ### User Settings
 
@@ -58,14 +62,11 @@ can be changed in two ways,
    login password ``rstudioPassword`` and the number of workers you
    want to deploy `workerPoolSize`
 
-		# user settings
-		userSettings:
-        # User setting: change the rstudio password on the manager
-	       rstudioPassword: bioc
-	    # User setting: change the number of workers in your cluster
-	       workerPoolSize: 5
-		   
+        workerPoolSize: 5             # Number of workers in the cluster
+        ...
+        rstudioPassword: bioc         # RStudio password on manager
+
 1. The other way is while deploying the helm chart,
 
-		helm install k8s-redis-bioc-example/helm-chart/ \
-			--set userSettings.rstudioPassword=biocuser,userSettings.workerPoolSize=10 
+        helm install k8s-redis-bioc-example/helm-chart/ \
+            --set rstudioPassword=biocuser,workerPoolSize=10

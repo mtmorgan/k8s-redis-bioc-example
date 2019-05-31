@@ -1,52 +1,43 @@
-# Default values for k8s-redis-bioc-chart.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# Default values for k8s-redis-bioc-chart. This is a YAML-formatted
+# file. Declare variables to be passed into your templates.
 
-# Manager and worker images
-cluster:
-  # custom manager image
-  managerImage: mtmorgan/bioc-redis-manager
-  managerImageTag: latest
-  # custom worker image
-  workerImage: mtmorgan/bioc-redis-worker
-  workerImageTag: latest
-  # Rstudio image
-  rstudioImage: rocker/rstudio
-  rstudioTag: 3.6.0
-  # Redis image
+#
+# user-oriented configuration
+#
+
+workerPoolSize: 5             # Number of workers in the cluster
+
+# Manager image
+managerImage: mtmorgan/bioc-redis-manager
+managerImageTag: latest
+
+# Worker image
+workerImage: mtmorgan/bioc-redis-worker
+workerImageTag: latest
+
+# RStudio access
+rstudioPort: 30001            # Port for user connection; must be >= 30000
+rstudioPassword: bioc         # RStudio password on manager
+
+#
+# internal settings
+#
+
+# image management (manager, worker, redis)
+pullPolicy: IfNotPresent
+restartPolicy: OnFailure
+
+# internal RStudio-specific config
+rstudio:
+  port: 8787                    # RStudioServer configured to listen here
+  protocol: http
+  type: NodePort
+
+# internal redis-specific config
+redis:
   redisImage: redis
-  redisImageTag: latest
-
-# Default cluster config:
-# settings here will apply to all three images,
-# manager, worker, rstudio
-clusterConfig:
-  restartPolicy: OnFailure
-
-# manager config
-managerConfig:
-  containerPort: 8787
-  pullPolicy: IfNotPresent
-
-# worker config
-workerConfig:
+  redisImageTag: 5.0
   env:
     name: master
     value: true
   containerPort: 6379
-  pullPolicy: IfNotPresent
-
-# Rstudio specific config
-rstudioConfig:
-  type: NodePort
-  port: 8787
-  nodePort: 30001
-  protocol: http
-  pullPolicy: IfNotPresent
-
-# user settings
-userSettings:
-  # User setting: change the rstudio password on the manager
-  rstudioPassword: bioc
-  # User setting: change the number of workers in your cluster
-  workerPoolSize: 5

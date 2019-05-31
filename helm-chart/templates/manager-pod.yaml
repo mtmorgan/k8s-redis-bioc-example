@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ .Release.Name}}-manager
+  name: {{ .Release.Name }}-manager
   labels:
     app: rstudio
 spec:
   containers:
     - name: manager
-      image: {{ .Values.cluster.managerImage}}
-      tag: {{ .Values.cluster.managerImageTag }}
+      image: {{ .Values.managerImage }}
+      tag: {{ .Values.managerImageTag }}
+      imagePullPolicy: {{ .Values.pullPolicy }}
       env:
         - name: PASSWORD
-          value: {{ .Values.userSettings.rstudioPassword}}
+          value: {{ .Values.rstudioPassword }}
       ports:
-        - containerPort: {{ .Values.managerConfig.containerPort}}
+        - containerPort: {{ .Values.redis.containerPort }}
       command: ["/init"]
-      imagePullPolicy: {{ .Values.managerConfig.pullPolicy }}
-  restartPolicy: {{ .Values.clusterConfig.restartPolicy | quote }}
+  restartPolicy: {{ .Values.restartPolicy | quote }}
