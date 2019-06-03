@@ -11,8 +11,8 @@ spec:
       tag: {{ .Values.redis.redisImageTag }}
       imagePullPolicy: {{ .Values.pullPolicy }}
       env:
-        - name: {{ .Values.redis.env.name | upper }}
-          value: {{ .Values.redis.env.value | quote }}
+        - name: MASTER
+          value: "true"
       ports:
         - containerPort: {{ .Values.redis.containerPort }}
   imageRestartPolicy: {{ .Values.restartPolicy }}

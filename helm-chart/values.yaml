@@ -37,7 +37,4 @@ rstudio:
 redis:
   redisImage: redis
   redisImageTag: 5.0
-  env:
-    name: master
-    value: true
   containerPort: 6379
